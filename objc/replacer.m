@@ -1,6 +1,9 @@
 #import <Foundation/Foundation.h>
 #include <objc/runtime.h>
 
+#define CLASS_NAME "Replacer"
+#define TARGET_CLASS "Cracker"
+
 @interface Replacer : NSObject{}
 - (void)toReplace;
 @end
@@ -8,8 +11,8 @@
 @implementation Replacer
 
 + (void)load {
-    Class thisKlass = [self class];
-    Class toReplaceKlass = NSClassFromString(@"Cracker");
+    Class thisKlass = objc_getClass(CLASS_NAME);
+    Class toReplaceKlass = objc_getClass(TARGET_CLASS);
 
     SEL selReplace = @selector(toReplace);
 
