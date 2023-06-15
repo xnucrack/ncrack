@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 #include <objc/runtime.h>
 
-#define CLASS_NAME "Replacer"
-#define TARGET_CLASS "Cracker"
+#define CLASS_NAME      "Replacer"
+#define TARGET_CLASS    "Cracker"
 
 @interface Replacer : NSObject{}
 - (void)toReplace;
