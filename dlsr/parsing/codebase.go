@@ -2,13 +2,6 @@ package parsing
 
 import "strings"
 
-type Codebase struct {
-	// The path to the codebase
-	Path string
-	// The set of files in the codebase
-	Files []string
-}
-
 func cParseFileDependencies(codeLines []string) []string {
 	var results []string
 
