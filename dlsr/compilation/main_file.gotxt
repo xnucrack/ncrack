@@ -1,8 +1,9 @@
-{{define "main"}}#include "{{ baseFileName .Path}}.h"
+{{define "main"}}#include "{{ baseFileName .OutPath}}.h"
 
-@implementation DLSR : NSObject{}
+@implementation {{ getInterfaceName .Path }} : NSObject{}
 
 {{ range .Selectors }}{{ .Body }}
+
 {{end}}
 @end
 {{end}}

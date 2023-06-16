@@ -19,6 +19,7 @@ type ReplacementMethod struct {
 
 type Source struct {
 	Path         string
+	OutPath      string
 	CIncludes    []Include
 	ObjCIncludes []Include
 	TargetClass  string

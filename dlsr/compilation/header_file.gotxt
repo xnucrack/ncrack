@@ -1,9 +1,9 @@
 {{define "header"}}{{ range .CIncludes }}#include {{ .Name }}
 {{end}}{{range .ObjCIncludes}}#import {{ .Name }}
 {{end}}
-@interface DLSR : NSObject{}
+@interface {{ getInterfaceName .Path }} : NSObject{}
 
-{{ range .Selectors }}{{ .Body }}
+{{ range .Selectors }}{{ getMethod .Body }}
 {{end}}
 @end
 {{end}}

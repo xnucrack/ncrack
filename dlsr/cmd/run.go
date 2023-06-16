@@ -27,6 +27,12 @@ var runCmd = &cobra.Command{
 NSLog(@"I am replaced");
 }`,
 				},
+				"withName:age": {
+					Selector: "withName:age",
+					Body: `- (void)withName:(NSString*)name (NSNumber*)age {
+NSLog(@"Name: %@; age: %@", name, age);
+}`,
+				},
 			},
 		}
 		sources := []parsing.Source{source}

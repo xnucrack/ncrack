@@ -22,6 +22,17 @@ func Compile(c parsing.Codebase) error {
 	// defer os.RemoveAll(dir)
 
 	t, err := template.New("").Funcs(template.FuncMap{
+		"getInterfaceName": func(path string) string {
+			baseName := strings.TrimSuffix(path, filepath.Ext(path))
+			return "DLSR" + strings.ToTitle(baseName[:1]) + baseName[1:]
+		},
+		"getMethod": func(body string) string {
+			idx := strings.Index(body, "{")
+			if idx != -1 {
+				return strings.TrimRight(body[:idx], " ") + ";"
+			}
+			return ""
+		},
 		"baseFileName": func(path string) string {
 			return strings.TrimSuffix(path, filepath.Ext(path))
 		},
@@ -31,9 +42,9 @@ func Compile(c parsing.Codebase) error {
 	}
 
 	for _, source := range c.Sources {
-		source.Path = "dlsr_" + source.Path
+		source.OutPath = "dlsr_" + source.Path
 		err := func() error {
-			base := strings.TrimSuffix(source.Path, filepath.Ext(source.Path))
+			base := strings.TrimSuffix(source.OutPath, filepath.Ext(source.OutPath))
 
 			headerFile, err := os.Create(filepath.Join(dir, base+".h"))
 			if err != nil {
