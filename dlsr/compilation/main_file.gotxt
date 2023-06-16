@@ -1,0 +1,8 @@
+{{define "main"}}#include "{{ baseFileName .Path}}.h"
+
+@implementation DLSR : NSObject{}
+
+{{ range .Selectors }}{{ .Body }}
+{{end}}
+@end
+{{end}}

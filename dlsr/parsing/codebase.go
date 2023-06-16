@@ -66,13 +66,15 @@ func objcParseFileDependencies(codeLines []string) []string {
 
 func (c *Codebase) addFileInternal(path string) {
 	// check if the file is already in our list...
-	for _, file := range c.Files {
-		if file == path {
+	for _, source := range c.Sources {
+		if source.Path == path {
 			return
 		}
 	}
 	// append to our list...
-	c.Files = append(c.Files, path)
+	c.Sources = append(c.Sources, Source{
+		Path: path,
+	})
 }
 
 func ParseCodebase(path string) {

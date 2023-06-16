@@ -12,12 +12,17 @@ type Include struct {
 	Type IncludeType
 }
 
+type ReplacementMethod struct {
+	Selector string
+	Body     string
+}
+
 type Source struct {
-	Name         string
-	CIncludes    []IncludeType
+	Path         string
+	CIncludes    []Include
 	ObjCIncludes []Include
 	TargetClass  string
-	Selectors    map[string]string
+	Selectors    map[string]ReplacementMethod
 }
 
 type Codebase struct {
