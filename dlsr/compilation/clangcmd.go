@@ -7,6 +7,7 @@ import (
 	"github.com/xnucrack/dlsr/parsing"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"text/template"
 )
@@ -35,6 +36,9 @@ func Compile(c parsing.Codebase) error {
 		},
 		"baseFileName": func(path string) string {
 			return strings.TrimSuffix(path, filepath.Ext(path))
+		},
+		"cleanSelector": func(sel string) string {
+			return regexp.MustCompile(`[^a-zA-Z]+`).ReplaceAllString(sel, "")
 		},
 	}).ParseFS(fileTemplates, "*")
 	if err != nil {
