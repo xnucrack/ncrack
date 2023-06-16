@@ -118,4 +118,4 @@ Running the binary now shows that the binary has called our new function.
 ![Running](./running_patched.png)
 
 We can do the same thing with ObjC methods using [method swizzling](https://www.dylib.zip/posts/cracking_macos.html) with `LC_REEXPORT_DYLIB` trick. 
-Sample code is given in [objc](./objc) directory.
+Sample code is given in [objc](example/objc) directory.
