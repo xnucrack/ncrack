@@ -27,6 +27,8 @@ type Source struct {
 }
 
 type Codebase struct {
-	// The set of files in the codebase
-	Sources []Source
+	Sources       []Source // The set of sources in the codebase
+	IncludePath   string   // Add the following to clang -I path
+	TargetLibrary string   // The patch will ocurr on this library
+	Links         []string // Link with the following libraries
 }
