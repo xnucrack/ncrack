@@ -1,11 +1,13 @@
 package compilation
 
 import (
+	"bytes"
 	"embed"
 	_ "embed"
 	"fmt"
 	"github.com/xnucrack/dlsr/parsing"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -45,7 +47,9 @@ func Compile(c parsing.Codebase) error {
 		return err
 	}
 
-	for _, source := range c.Sources {
+	mainSourceFiles := make([]string, len(c.Sources))
+
+	for i, source := range c.Sources {
 		source.OutPath = "dlsr_" + source.Path
 		err := func() error {
 			base := strings.TrimSuffix(source.OutPath, filepath.Ext(source.OutPath))
@@ -63,6 +67,9 @@ func Compile(c parsing.Codebase) error {
 				return err
 			}
 			defer headerFile.Close()
+
+			mainSourceFiles[i] = base + ".m"
+
 			t.ExecuteTemplate(mainFile, "main", source)
 			return nil
 		}()
@@ -70,6 +77,45 @@ func Compile(c parsing.Codebase) error {
 			return err
 		}
 	}
+
+	currentDir, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	if err := os.Chdir(dir); err != nil {
+		return fmt.Errorf("cannot change directory: %v", err)
+	}
+
+	args := []string{"-dynamiclib", "-I", c.IncludePath}
+	if len(c.Frameworks) > 0 {
+		for _, framework := range c.Frameworks {
+			args = append(args, "-framework")
+			args = append(args, framework)
+		}
+	}
+	if len(c.Links) > 0 {
+		for _, link := range c.Links {
+			args = append(args, "-l")
+			args = append(args, link)
+		}
+	}
+	for _, source := range mainSourceFiles {
+		args = append(args, source)
+	}
+
+	args = append(args, "-o", c.TargetLibrary)
+
+	stderr := new(bytes.Buffer)
+
+	cmd := exec.Command("clang", args...)
+	cmd.Stderr = stderr
+
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("compilation error: %s", stderr.String())
+	}
+
+	_ = currentDir
 
 	return nil
 }

@@ -31,4 +31,5 @@ type Codebase struct {
 	IncludePath   string   // Add the following to clang -I path
 	TargetLibrary string   // The patch will ocurr on this library
 	Links         []string // Link with the following libraries
+	Frameworks    []string // Link with the following frameworks
 }

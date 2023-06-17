@@ -1,6 +1,7 @@
 {{define "main"}}#include "{{ baseFileName .OutPath}}.h"
+#include <objc/runtime.h>
 
-#define CLASS_NAME      "{{ getInterfaceName .Path }}
+#define CLASS_NAME      "{{ getInterfaceName .Path }}"
 #define TARGET_CLASS    "{{ .TargetClass }}"
 
 @implementation {{ getInterfaceName .Path }} : NSObject{}
@@ -15,9 +16,9 @@
     SEL sel_new_{{cleanSelector $v.Selector}} = @selector({{$v.Selector}});
 
     Method mth_orig_{{cleanSelector $k}} = class_getInstanceMethod(targetClass, sel_orig_{{cleanSelector $k}});
-    Method mth_new_{{cleanSelector $v.Selector}} = class_getInstanceMethods(thisKlass, sel_new_{{cleanSelector $v.Selector}});
+    Method mth_new_{{cleanSelector $v.Selector}} = class_getInstanceMethod(thisKlass, sel_new_{{cleanSelector $v.Selector}});
 
-    IMP imp_new_{{cleanSelector $v.Selector}} = method_getImplementation(mth_new{{cleanSelector $v.Selector}});
+    IMP imp_new_{{cleanSelector $v.Selector}} = method_getImplementation(mth_new_{{cleanSelector $v.Selector}});
     method_setImplementation(mth_orig_{{cleanSelector $k}}, imp_new_{{cleanSelector $v.Selector}});
     {{ end }}
 }

@@ -1,6 +1,5 @@
 {{define "header"}}{{ range .CIncludes }}#include {{ .Name }}
-{{end}}#include <objc/runtime.h>
-{{range .ObjCIncludes}}#import {{ .Name }}
+{{end}}{{range .ObjCIncludes}}#import {{ .Name }}
 {{end}}
 @interface {{ getInterfaceName .Path }} : NSObject{}
 
